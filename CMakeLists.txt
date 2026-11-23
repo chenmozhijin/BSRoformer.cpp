@@ -171,7 +171,11 @@ if(BSR_BUILD_CLI)
     if(MSVC)
         target_compile_options(bs_roformer-cli PRIVATE /W3 /utf-8)
     endif()
-    
+    # argv and fopen take the process code page; UTF-8 lets paths outside the ANSI code page through
+    if(WIN32)
+        target_sources(bs_roformer-cli PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/cli/utf8.manifest)
+    endif()
+
     bsr_copy_ggml_runtime_dlls(bs_roformer-cli)
 endif()
 
